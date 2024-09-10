@@ -1,8 +1,10 @@
 import os
 from app import create_app
-from prisma import Prisma
+from prisma import Prisma, register
 
-db = Prisma()
+# db = Prisma()
+# db.connect()
+# register(db)
 
 app = create_app(os.getenv('CONFIG_MODE'))
 
@@ -18,4 +20,4 @@ app.register_blueprint(users_controllers)
 
 # listener
 if __name__ == '__main__':
-    app.run()
+    app.run(debug=True)
