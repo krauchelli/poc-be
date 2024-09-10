@@ -6,16 +6,6 @@ db = Prisma()
 
 app = create_app(os.getenv('CONFIG_MODE'))
 
-@app.before_request
-def before_request():
-    print('test before request')
-    db.connect()
-
-@app.after_request
-def after_request():
-    print('test after request')
-    db.disconnect()
-
 #routes
 # simple initial caller
 @app.route('/<name>')
