@@ -64,3 +64,12 @@ def UpdateUser(user_id):
         "message": "User updated successfully",
         "data": updated_user
     }), 200
+
+
+def DeleteUser(user_id):
+    deleted_user = models["delete_user"](user_id)
+    return jsonify({
+        "statusCode": 200,
+        "message": "User deleted successfully",
+        "data": deleted_user
+    }), 200

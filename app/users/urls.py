@@ -1,6 +1,6 @@
 from flask import Blueprint, jsonify, request
 from manager import app
-from .controllers import GetAllUsers, CreateUser, GetUserById, UpdateUser
+from .controllers import GetAllUsers, CreateUser, GetUserById, UpdateUser, DeleteUser
 
 users_controllers = Blueprint('users', __name__)
 
@@ -11,9 +11,11 @@ def users():
     if request.method == 'POST':
         return CreateUser()
 
-@users_controllers.route('/users/<user_id>', methods=['GET', 'PUT'])
+@users_controllers.route('/users/<user_id>', methods=['GET', 'PUT', 'DELETE'])
 def user(user_id):
     if request.method == 'GET':
         return GetUserById(user_id)
     if request.method == 'PUT':
         return UpdateUser(user_id)
+    if request.method == 'DELETE':
+        return DeleteUser(user_id)

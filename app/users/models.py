@@ -20,9 +20,14 @@ def update_user(user_id: uuid.UUID, user: dict):
     updated_user = User.prisma().update(where={"id": str(user_id)}, data=user)
     return updated_user.dict()
 
+def delete_user(user_id: uuid.UUID):
+    deleted_user = User.prisma().delete(where={"id": str(user_id)})
+    return deleted_user.dict()
+
 models = {
     "get_all_users": get_all_users,
     "get_user_by_id": get_user_by_id,
     "create_user": create_user,
-    "update_user": update_user
+    "update_user": update_user,
+    "delete_user": delete_user
 }
