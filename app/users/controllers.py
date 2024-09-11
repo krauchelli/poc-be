@@ -1,4 +1,5 @@
 from flask import request, jsonify, Flask
+from flask_jwt_extended import jwt_required, get_jwt_identity
 import bcrypt
 from app.users.models import models
 
@@ -23,18 +24,26 @@ def GetAllUsers():
     except Exception as e:
         return handle_exception(e)
 
-
+@jwt_required()
 def GetUserById(user_id):
     try:
+        current_user_id = get_jwt_identity()
+        
+        # validate if user_id is not the same as the current user
+        if current_user_id != user_id:
+            return jsonify({
+                "statusCode": 403,
+                "message": "Forbidden Access"
+            }), 403
+        
         user = models["get_user_by_id"](user_id)
-
-        #validate
+        # validate if user is not exist
         if not user:
             return jsonify({
                 "statusCode": 404,
                 "message": f"User with ID: {user_id} not found"
             }), 404
-
+        
         return jsonify({
             "statusCode": 200,
             "message": "Success",
