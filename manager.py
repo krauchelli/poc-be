@@ -15,7 +15,7 @@ def index(name):
     return 'Hello, {}'.format(name)
 #blueprints
 from app.users.urls import users_controllers
-app.register_blueprint(users_controllers, url_prefix='/v1')
+app.register_blueprint(users_controllers, url_prefix='/v1/users')
 
 
 # listener
