@@ -111,9 +111,12 @@ def UpdateUser(user_id):
         if not password:
             password = exist_user["password"]
 
+        # hash password
+        hashed_password = bcrypt.hashpw(password.encode("utf-8"), bcrypt.gensalt())
+
         user = {
             "username": username,
-            "password": password
+            "password": hashed_password.decode("utf-8")
         }
 
         updated_user = models["update_user"](user_id, user)
