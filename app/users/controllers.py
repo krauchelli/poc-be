@@ -1,5 +1,5 @@
 from flask import request, jsonify, Flask
-
+import bcrypt
 from app.users.models import models
 
 app = Flask(__name__)
@@ -72,11 +72,13 @@ def CreateUser():
                 "message": "Username is already exist"
             }), 400
 
+        # hash password
+        hashed_password = bcrypt.hashpw(password.encode("utf-8"), bcrypt.gensalt())
 
         user = {
             "email": email,
             "username": username,
-            "password": password
+            "password": hashed_password.decode("utf-8")
         }
         print(user)
 
