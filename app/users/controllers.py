@@ -27,6 +27,14 @@ def GetAllUsers():
 def GetUserById(user_id):
     try:
         user = models["get_user_by_id"](user_id)
+
+        #validate
+        if not user:
+            return jsonify({
+                "statusCode": 404,
+                "message": f"User with ID: {user_id} not found"
+            }), 404
+
         return jsonify({
             "statusCode": 200,
             "message": "Success",
@@ -42,6 +50,28 @@ def CreateUser():
         email = req_body.get("email")
         username = req_body.get("username")
         password = req_body.get("password")
+
+        # validate if one of them is empty
+        if not email or not username or not password:
+            return jsonify({
+                "statusCode": 400,
+                "message": "Email, username, and password are required"
+            }), 400
+        # validate if email is already exist
+        exist_user_email = models["get_user_by_email"](email)
+        if exist_user_email:
+            return jsonify({
+                "statusCode": 400,
+                "message": "Email is already exist"
+            }), 400
+        # validate if username is already exist
+        exist_user_username = models["get_user_by_username"](username)
+        if exist_user_username:
+            return jsonify({
+                "statusCode": 400,
+                "message": "Username is already exist"
+            }), 400
+
 
         user = {
             "email": email,

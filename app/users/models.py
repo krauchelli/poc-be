@@ -12,6 +12,14 @@ def get_user_by_id(user_id: uuid.UUID):
     user = User.prisma().find_unique(where={"id": str(user_id)})
     return user.dict() if user else None
 
+def get_user_by_email(email: str):
+    user = User.prisma().find_unique(where={"email": email})
+    return user.dict() if user else None
+
+def get_user_by_username(username: str):
+    user = User.prisma().find_unique(where={"username": username})
+    return user.dict() if user else None
+
 def create_user(user: dict):
     created_user = User.prisma().create(data=user)
     return created_user.dict()
@@ -27,6 +35,8 @@ def delete_user(user_id: uuid.UUID):
 models = {
     "get_all_users": get_all_users,
     "get_user_by_id": get_user_by_id,
+    "get_user_by_email": get_user_by_email,
+    "get_user_by_username": get_user_by_username,
     "create_user": create_user,
     "update_user": update_user,
     "delete_user": delete_user
