@@ -95,9 +95,15 @@ def UpdateUser(user_id):
         req_body = request.json
         username = req_body.get("username")
         password = req_body.get("password")
-
-        # validate if one of them is empty, keep the old value
         exist_user = models["get_user_by_id"](user_id)
+
+        # validate if user is not exist
+        if not exist_user:
+            return jsonify({
+                "statusCode": 404,
+                "message": f"User with ID: {user_id} not found"
+            }), 404
+        # validate if one of them is empty, keep the old value
         if not username: 
             username = exist_user["username"]
         if not password:
@@ -117,9 +123,19 @@ def UpdateUser(user_id):
     except Exception as e:
         return handle_exception(e)
 
+
 def DeleteUser(user_id):
     try:
+        exist_user = models["get_user_by_id"](user_id)
+        # validate
+        if not exist_user:
+            return jsonify({
+                "statusCode": 404,
+                "message": f"User with ID: {user_id} not found"
+            }), 404
+        
         deleted_user = models["delete_user"](user_id)
+
         return jsonify({
             "statusCode": 200,
             "message": "User deleted successfully",
