@@ -2,9 +2,13 @@ import os
 from app import create_app
 from prisma import Prisma, register
 from flask_jwt_extended import JWTManager
+from flask_cors import CORS
 from app.auth.services import is_token_blacklisted
 
 app = create_app(os.getenv('CONFIG_MODE'))
+
+# cors
+CORS(app, resources={r'/*': {'origins': '*'}})
 
 # jwt configuration
 app.config['JWT_SECRET_KEY'] = os.getenv('JWT_SECRET_KEY')
