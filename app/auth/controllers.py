@@ -94,7 +94,7 @@ def Login():
             "statusCode": 200,
             "message": "Login successfully",
             "data": exist_user,
-            "token": access_token
+            "access_token": access_token
         }), 200
     except Exception as e:
         return handle_exception(e)
