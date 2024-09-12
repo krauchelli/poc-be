@@ -2,12 +2,19 @@ import os
 from app import create_app
 from prisma import Prisma, register
 from flask_jwt_extended import JWTManager
+from app.auth.services import is_token_blacklisted
 
 app = create_app(os.getenv('CONFIG_MODE'))
 
 # jwt configuration
 app.config['JWT_SECRET_KEY'] = os.getenv('JWT_SECRET_KEY')
 jwt = JWTManager(app)
+
+# token blacklist check
+@jwt.token_in_blocklist_loader
+def check_if_token_in_blacklist(jwt_header, jwt_payload):
+    jti = jwt_payload['jti']
+    return is_token_blacklisted(jti)
 
 #routes
 # simple initial caller

@@ -1,6 +1,7 @@
 from flask import request, jsonify, Flask
+from flask_jwt_extended import jwt_required, get_jwt_identity, get_jwt
 import bcrypt
-from app.auth.services import create_jwt_token
+from app.auth.services import create_jwt_token, add_token_to_blacklist
 from app.users.models import models
 
 app = Flask(__name__)
@@ -98,13 +99,30 @@ def Login():
     except Exception as e:
         return handle_exception(e)
 
-
+@jwt_required()
 def Logout():
+    print(get_jwt_identity())
     try:
+        jti = get_jwt()["jti"]
+        user_id = get_jwt_identity()  # Extract user identity from the JWT
+
+        # validate that the user ID is not None
+        if not user_id:
+            return jsonify({
+                "statusCode": 400,
+                "message": "User ID missing in the JWT"
+            }), 400
+
+        # Add token to blacklist
+        add_token_to_blacklist(jti, user_id)
+
         return jsonify({
             "statusCode": 200,
             "message": "Logout successfully"
         }), 200
     except Exception as e:
-        return handle_exception(e)
+        return jsonify({
+            "statusCode": 500,
+            "message": f"Internal Server Error: {str(e)}"
+        }), 500
     

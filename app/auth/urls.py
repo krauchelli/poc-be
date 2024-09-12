@@ -1,5 +1,5 @@
 from flask import Blueprint, request
-from app.auth.controllers import Register, Login
+from app.auth.controllers import Register, Login, Logout
 
 auth_controllers = Blueprint('auth', __name__)
 
@@ -10,3 +10,7 @@ def register():
 @auth_controllers.route('/login', methods=['POST'])
 def login():
     return Login()
+
+@auth_controllers.route('/logout', methods=['POST'])
+def logout():
+    return Logout()
