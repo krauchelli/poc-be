@@ -20,8 +20,18 @@ model User {
   email     String   @unique
   username  String   @unique
   password  String
-  role     Role     @default(USER)
+  role      Role     @default(USER)
+  tokens    TokenBlacklist[]  // one-to-many relationship
+  createdAt DateTime @default(now())
 }
+
+model TokenBlacklist {
+  id        String   @id @default(uuid())
+  jti       String   @unique  // JWT ID (unique identifier of the token)
+  userId    String   // Foreign key for the User model
+  user      User     @relation(fields: [userId], references: [id])
+  createdAt DateTime @default(now())
+} 
 
 enum Role {
   USER
