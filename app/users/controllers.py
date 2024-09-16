@@ -89,7 +89,6 @@ def CreateUser():
             "username": username,
             "password": hashed_password.decode("utf-8")
         }
-        print(user)
 
         created_user = models["create_user"](user)
         return jsonify({

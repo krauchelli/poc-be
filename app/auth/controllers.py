@@ -101,7 +101,6 @@ def Login():
 
 @jwt_required()
 def Logout():
-    print(get_jwt_identity())
     try:
         jti = get_jwt()["jti"]
         user_id = get_jwt_identity()  # Extract user identity from the JWT
