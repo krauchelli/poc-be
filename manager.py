@@ -8,7 +8,7 @@ from app.auth.services import is_token_blacklisted
 app = create_app(os.getenv('CONFIG_MODE'))
 
 # cors
-CORS(app, resources={r'/*': {'origins': '*'}})
+CORS(app, resources={r'/*': {'origins': '*'}}, max_age=86400)
 
 # jwt configuration
 app.config['JWT_SECRET_KEY'] = os.getenv('JWT_SECRET_KEY')
@@ -35,4 +35,4 @@ app.register_blueprint(users_controllers, url_prefix='/v1/users')
 
 # listener
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host="0.0.0.0", port=5000, threaded=True)
