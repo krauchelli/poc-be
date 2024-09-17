@@ -136,7 +136,7 @@ def UpdateUser(user_id):
     except Exception as e:
         return handle_exception(e)
 
-
+@jwt_required()
 def DeleteUser(user_id):
     try:
         exist_user = models["get_user_by_id"](user_id)
