@@ -4,14 +4,14 @@ from .controllers import GetAllUsers, CreateUser, GetUserById, UpdateUser, Delet
 
 users_controllers = Blueprint('users', __name__)
 
-@users_controllers.route('/', methods=['GET', 'POST'])
+@users_controllers.route('', methods=['GET', 'POST'])
 def users():
     if request.method == 'GET':
         return GetAllUsers()
     if request.method == 'POST':
         return CreateUser()
 
-@users_controllers.route('/<user_id>', methods=['GET', 'PUT', 'DELETE'])
+@users_controllers.route('<user_id>', methods=['GET', 'PUT', 'DELETE'])
 def user(user_id):
     if request.method == 'GET':
         return GetUserById(user_id)
