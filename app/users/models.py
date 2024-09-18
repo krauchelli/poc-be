@@ -6,19 +6,20 @@ from datetime import datetime
 prisma = Prisma()
 
 def get_all_users():
-    users = User.prisma().find_many()
+    #users = User.prisma().find_many()
+    users = User.prisma().find_many(where={"deleted": False})
     return [user.dict() for user in users]
 
 def get_user_by_id(user_id: uuid.UUID):
-    user = User.prisma().find_unique(where={"id": str(user_id)})
+    user = User.prisma().find_unique(where={"id": str(user_id), "deleted": False})
     return user.dict() if user else None
 
 def get_user_by_email(email: str):
-    user = User.prisma().find_unique(where={"email": email})
+    user = User.prisma().find_unique(where={"email": email, "deleted": False})
     return user.dict() if user else None
 
 def get_user_by_username(username: str):
-    user = User.prisma().find_unique(where={"username": username})
+    user = User.prisma().find_unique(where={"username": username, "deleted": False})
     return user.dict() if user else None
 
 def create_user(user: dict):
@@ -26,7 +27,11 @@ def create_user(user: dict):
     return created_user.dict()
 
 def update_user(user_id: uuid.UUID, user: dict):
-    updated_user = User.prisma().update(where={"id": str(user_id)}, data=user)
+    updated_user = User.prisma().update(
+        where={
+            "id": str(user_id),
+            "deleted": False
+        }, data=user)
     return updated_user.dict()
 
 def delete_user(user_id: uuid.UUID):
