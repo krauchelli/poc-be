@@ -1,6 +1,7 @@
 from prisma import Prisma
 from prisma.models import User
 import uuid
+from datetime import datetime
 
 prisma = Prisma()
 
@@ -32,6 +33,13 @@ def delete_user(user_id: uuid.UUID):
     deleted_user = User.prisma().delete(where={"id": str(user_id)})
     return deleted_user.dict()
 
+def soft_delete_user(user_id: uuid.UUID):
+    deleted_user = User.prisma().update(where={"id": str(user_id)}, data={
+        "deleted": True,
+        "deletedAt": str(datetime.now().astimezone().isoformat())
+    })
+    return deleted_user.dict()
+
 models = {
     "get_all_users": get_all_users,
     "get_user_by_id": get_user_by_id,
@@ -39,5 +47,6 @@ models = {
     "get_user_by_username": get_user_by_username,
     "create_user": create_user,
     "update_user": update_user,
-    "delete_user": delete_user
+    "delete_user": delete_user,
+    "soft_delete_user": soft_delete_user
 }

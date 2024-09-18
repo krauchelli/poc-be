@@ -156,3 +156,30 @@ def DeleteUser(user_id):
         }), 200
     except Exception as e:
         return handle_exception(e)
+    
+# will be replacing DeleteUser
+@jwt_required()
+def SoftDeleteUser(user_id):
+    try:
+        exist_user = models["get_user_by_id"](user_id)
+        # validate
+        if not exist_user:
+            return jsonify({
+                "statusCode": 404,
+                "message": f"User with ID: {user_id} not found"
+            }), 404
+        if exist_user["deleted"]:
+            return jsonify({
+                "statusCode": 400,
+                "message": f"User with ID: {user_id} already deleted"
+            }), 400
+
+        deleted_user = models["soft_delete_user"](user_id)
+
+        return jsonify({
+            "statusCode": 200,
+            "message": "User deleted successfully",
+            "data": deleted_user
+        }), 200
+    except Exception as e:
+        return handle_exception(e)
