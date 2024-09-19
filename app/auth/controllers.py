@@ -20,6 +20,8 @@ def Register():
         email = req_body.get("email")
         username = req_body.get("username")
         password = req_body.get("password")
+        # default system for user registration
+        systemName = "SYSTEM"
 
         # validate if email, username, or password is empty
         if not email or not username or not password:
@@ -48,7 +50,9 @@ def Register():
         user = {
             "email": email,
             "username": username,
-            "password": hashed_password.decode('utf-8')
+            "password": hashed_password.decode('utf-8'),
+            "createdBy": systemName,
+            "updatedBy": systemName
         }
         created_user = models["create_user"](user)
 
