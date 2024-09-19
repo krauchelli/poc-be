@@ -168,7 +168,7 @@ def SoftDeleteUser(user_id):
                 "statusCode": 404,
                 "message": f"User with ID: {user_id} not found"
             }), 404
-        if exist_user["deleted"]:
+        if exist_user["status"] == "DELETED":
             return jsonify({
                 "statusCode": 400,
                 "message": f"User with ID: {user_id} already deleted"
