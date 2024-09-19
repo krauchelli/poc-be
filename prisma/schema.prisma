@@ -20,7 +20,7 @@ model User {
   email     String   @unique //ganti jadi username atau digabung dengan username
   username  String   @unique
   password  String
-  deleted   Boolean  @default(false) // Soft deletion
+  status    Status   @default(ACTIVE)
   role      Role     @default(USER)
   tokens    TokenBlacklist[]  // one-to-many relationship
   createdAt DateTime @default(now())
@@ -36,7 +36,15 @@ model TokenBlacklist {
   createdAt DateTime @default(now())
 } 
 
+// enum for user role
 enum Role {
   USER
   ADMIN
+}
+
+// enum for user status
+enum Status {
+  ACTIVE
+  INACTIVE
+  DELETED
 }
