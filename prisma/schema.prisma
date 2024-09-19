@@ -25,8 +25,11 @@ model User {
   role        Role     @default(USER)
   tokens      TokenBlacklist[]  // one-to-many relationship
   createdAt   DateTime @default(now())
+  createdBy   String?
   updatedAt   DateTime? @updatedAt
+  updatedBy   String?
   deletedAt   DateTime?
+  deletedBy   String?
 }
 
 model TokenBlacklist {
