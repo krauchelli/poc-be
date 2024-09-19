@@ -16,16 +16,17 @@ datasource db {
 }
 
 model User {
-  id        String   @id @default(uuid())
-  email     String   @unique //ganti jadi username atau digabung dengan username
-  username  String   @unique
-  password  String
-  status    Status   @default(ACTIVE)
-  role      Role     @default(USER)
-  tokens    TokenBlacklist[]  // one-to-many relationship
-  createdAt DateTime @default(now())
-  updatedAt DateTime? @updatedAt
-  deletedAt DateTime?
+  id          String   @id @default(uuid())
+  email       String   @unique //ganti jadi username atau digabung dengan username
+  username    String   @unique
+  phoneNumber String?  @unique
+  password    String
+  status      Status   @default(ACTIVE)
+  role        Role     @default(USER)
+  tokens      TokenBlacklist[]  // one-to-many relationship
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime? @updatedAt
+  deletedAt   DateTime?
 }
 
 model TokenBlacklist {
