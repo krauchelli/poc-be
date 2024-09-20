@@ -104,7 +104,7 @@ def UpdateUser(user_id):
     try:
         req_body = request.json
         username = req_body.get("username")
-        password = req_body.get("password")
+        newPassword = req_body.get("password")
         phoneNumber = req_body.get("phoneNumber")
         exist_user = models["get_user_by_id"](user_id)
         current_user_id = get_jwt_identity()
@@ -118,17 +118,18 @@ def UpdateUser(user_id):
         # validate if one of them is empty, keep the old value
         if not username: 
             username = exist_user["username"]
-        if not password:
-            password = exist_user["password"]
         if not phoneNumber:
             phoneNumber = exist_user["phoneNumber"]
+        if newPassword:
+            # hash password
+            hashed_password = bcrypt.hashpw(newPassword.encode("utf-8"), bcrypt.gensalt()).decode("utf-8")
+        else:
+            hashed_password = exist_user["password"]
 
-        # hash password
-        hashed_password = bcrypt.hashpw(password.encode("utf-8"), bcrypt.gensalt())
 
         user = {
             "username": username,
-            "password": hashed_password.decode("utf-8"),
+            "password": hashed_password,
             "phoneNumber": phoneNumber,
             "updatedBy": current_user_id
         }
